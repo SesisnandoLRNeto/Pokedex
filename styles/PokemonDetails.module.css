@@ -1,0 +1,9 @@
+.pokemonImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 235px;
+  height: 200px;
+  margin: 21px;
+}

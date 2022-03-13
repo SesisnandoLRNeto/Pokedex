@@ -1,18 +1,15 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/Home.module.css';
-import { getPokemonList } from './api/service';
+import PokemonDetails from './pokemon-details/[id]';
 
 export default function Home() {
-  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonName, setPokemonName] = useState('');
 
-  useEffect(() => {
-    getPokemon();
-  }, []);
-
-  async function getPokemon() {
-    const res = await getPokemonList();
-    setPokemonList(res.results);
+  function searchByPokemonName(event) {
+    event.preventDefault();
+    const formPokemonName: string = event.target.name.value;
+    setPokemonName(formPokemonName.toLowerCase());
   }
 
   return (
@@ -24,12 +21,27 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div data-testid='home-title'>Home</div>
-        <ul data-testid='pokemon-list'>
-          {pokemonList.map((value) => (
-            <li key={value.url}>{value.name}</li>
-          ))}
-        </ul>
+        <div data-testid='home-title' className={styles.title}>
+          Pokedex
+        </div>
+        <div data-testid='pokedex' className={styles.pokedexContainer}>
+          <div className={styles.pokemonDetails}>
+            <div className={styles.pokemonDetailsHeader}></div>
+            <div data-testid='screen' className={styles.screen}>
+              <PokemonDetails pokemonName={pokemonName} />
+            </div>
+
+            <div className={styles.pokemonDetailsFooter}></div>
+          </div>
+          <div className={styles.pokedexDivider}></div>
+          <div className={styles.pokemonSearch}>
+            <form className={styles.searchForm} onSubmit={searchByPokemonName}>
+              <label htmlFor='name'>Pokemon Name</label>
+              <input id='name' type='text' autoComplete='name' required />
+              <button type='submit'>Search</button>
+            </form>
+          </div>
+        </div>
       </main>
 
       <footer className={styles.footer}></footer>
